@@ -10,7 +10,7 @@ const userAuthCheck = async (req, res, next) => {
   
     const token = req.headers.authorization?.split(" ")[1];
     if (! token) {
-      console.error(token);
+      console.error(token);z
         return next(new HttpError("Authentication Failed", 403))
     } else {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -21,8 +21,9 @@ const userAuthCheck = async (req, res, next) => {
         } else {
           req.userData = { 
             userId : decodedToken.user_id , 
-            userRole : decodedToken.user_role,
-            userEmail : decodedToken.user_email
+            userRole : decodedToken.user_role||decoded.role || user.role, 
+            userEmail : decodedToken.user_email || user.email
+
         }; 
         next();
     }
