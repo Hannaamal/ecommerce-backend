@@ -6,7 +6,10 @@ import productRouter from './routes/productRoutes.js';
 import cartRouter from './routes/cartRoutes.js';
 import cors from 'cors';
 import authRouter from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import wishlistRouter from './routes/wishlistRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 
 dotenv.config();
@@ -27,10 +30,19 @@ app.use(cors({
 
 app.use('/uploads', express.static('uploads'));
 
-app.use('/api/cart', cartRouter);
+app.use('/api/category',categoryRouter);
 app.use('/api/auth',authRouter)
 app.use('/api' ,productRouter);
-app.use("/api/users", userRoutes);
+app.use("/api/users", userRouter);
+app.use('/api/wishlist', wishlistRouter);
+app.use('/api/orders', orderRouter);
+app.use('/api/cart', cartRouter);
+
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 app.disable("etag"); 
 

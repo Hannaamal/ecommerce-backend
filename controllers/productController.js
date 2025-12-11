@@ -178,14 +178,17 @@ export const getProductById = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const errors = validationResult(req)
+    console.error("Validation errors:", errors.array()); 
     if(!errors.isEmpty()){
       console.error(errors, 'errors')
       return next(new HttpError("Invalid data inputs passed", 400));
     }else{
       const {userRole} = req.userData
       const imagePath = req.file ? req.file.path :  "uploads/default.png";
+      console.log("Request body:", req.body);
+      console.log("Request file:", req.file);
   
-      // console.log(userRole)
+      console.log(userRole)
   
       if (userRole !== "admin") {
         return next(new HttpError("User not authorized", 401))
@@ -202,7 +205,9 @@ export const createProduct = async (req, res, next) => {
         }
         const product = new Product(newProduct);
         await product.save();
+        console.error(product);
         if (!product)
+          
           return res.status(400).json({
             status: false,
             message: "Invalid product data",
