@@ -12,6 +12,7 @@ import orderRouter from './routes/orderRoutes.js';
 import userRouter from './routes/userRoutes.js';
 
 
+
 dotenv.config();
 const app = express();
 
@@ -35,7 +36,7 @@ app.use('/api/auth',authRouter)
 app.use('/api' ,productRouter);
 app.use("/api/users", userRouter);
 app.use('/api/wishlist', wishlistRouter);
-app.use('/api/orders', orderRouter);
+app.use('/api/order', orderRouter);
 app.use('/api/cart', cartRouter);
 
 

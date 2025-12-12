@@ -10,7 +10,7 @@ const userAuthCheck = async (req, res, next) => {
   
     const token = req.headers.authorization?.split(" ")[1];
     if (! token) {
-      console.error(token);z
+      console.error(token);
         return next(new HttpError("Authentication Failed", 403))
     } else {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);

@@ -5,13 +5,14 @@ import Product from "../model/product.js";
 export const addToWishlist = async (req, res) => {
   try {
     const { product_id } = req.body;
+    const userId = req.userData.userId; // assuming you have auth middleware
 
-    const exists = await Wishlist.findOne({ product_id });
+    const exists = await Wishlist.findOne({ product_id, user: userId });
     if (exists) {
       return res.status(400).json({ message: "Already in wishlist" });
     }
 
-    const wishItem = new Wishlist({ product_id });
+    const wishItem = new Wishlist({ product_id, user: userId });
     await wishItem.save();
 
     res.status(201).json({ message: "Added to wishlist", wishItem });
@@ -20,10 +21,13 @@ export const addToWishlist = async (req, res) => {
   }
 };
 
+
 // GET Wishlist Items
 export const getWishlist = async (req, res) => {
   try {
-    const items = await Wishlist.find().populate({
+    const userId = req.userData.userId;
+
+    const items = await Wishlist.find({ user: userId }).populate({
       path: "product_id",
       select: "_id product_name price brand image",
     });
@@ -33,6 +37,7 @@ export const getWishlist = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // REMOVE from wishlist
 export const removeFromWishlist = async (req, res) => {

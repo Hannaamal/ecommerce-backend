@@ -1,9 +1,9 @@
 import express from "express";
-import { createOrder, getOrders } from "../controllers/orderController.js";
+import { createOrder } from "../controllers/orderController.js";
+import userAuthCheck from "../middlewares/authCheck.js";
 
-// POST /api/orders
-const OrderRouter = express.Router();
-OrderRouter.post("/orderplaced", createOrder);
-OrderRouter.get("/placedorder", getOrders);
+const orderRouter = express.Router();
 
-export default OrderRouter;
+orderRouter.post("/create", userAuthCheck, createOrder);
+
+export default orderRouter;
