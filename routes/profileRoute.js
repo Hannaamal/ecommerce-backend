@@ -1,11 +1,14 @@
 import express from "express";
-import { getProfile } from "../controllers/userController.js";
-import checkAuth from "../middleware/checkAuth.js";
-import upload from "../middlewares/fileUpload.js";
+import  from 'first'
+import { getProfile, updateProfile, updateProfileImage } from "../controllers/userController.js";
+import multer from "multer";
+import authMiddleware from "../middleware/authMiddleware.js";
 
-const profileRouter = express.Router();
+const ProfileRouter = express.Router();
+const upload = multer({ dest: "uploads/" }); // Simple storage
 
-profileRouter.get("/profile", checkAuth, getProfile);
-profileRouter.put("/profile/image", checkAuth, upload.single("image"), updateProfileImage);
+ProfileRouter.get("/profile", authMiddleware, getProfile);
+ProfileRouter.put("/profile", authMiddleware, updateProfile);
+ProfileRouter.put("/profile/image", authMiddleware, upload.single("image"), updateProfileImage);
 
-export default profileRouter;
+export default ProfileRouter;
