@@ -10,17 +10,25 @@ export const getProducts = async (req, res, next) => {
     const limitNum = parseInt(limit);
     const skipNum = parseInt(skip);
 
+    
+     // ✅ STEP 1: base query
     const query = {
       is_deleted: false,
       stock: { $gt: 0 },
-      ...(category !== "All" && { category }),
+       ...(category !== "All" && { category }),
     };
 
-    if (q) {
-      query.product_name = { $regex: q, $options: "i" }; // ✅ match field name correctly
+    // ✅ STEP 2: apply search ONLY if q exists
+    if (q && q.trim() !== "") {
+      query.product_name = { $regex: q, $options: "i" };
     }
 
-    // console.log(query, 'query')
+    // ✅ STEP 3: apply category ONLY if not "All"
+    if (category && category !== "All") {
+      query.category = category; // category ID
+    }
+
+    console.log(query, 'query')
 
     const totalCount = await Product.countDocuments(query);
     const products = await Product.find(query)
