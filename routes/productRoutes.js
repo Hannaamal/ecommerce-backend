@@ -25,7 +25,8 @@ const createupdatevalidationrule = [
   check("price").notEmpty().withMessage("price is required"),
   check("stock").notEmpty().withMessage("stock is required").isNumeric().withMessage("must be a number"),
   check("brand").notEmpty().withMessage(" brand,  is required"),
-  check("category").notEmpty().withMessage("category is required") .isIn(["All","fragrances","beauty","furniture","groceries","kitchen-accessories"]).withMessage("Invalid category selected")
+  check("category").notEmpty().withMessage(" category,  is required"),
+  
         
  ]; 
 

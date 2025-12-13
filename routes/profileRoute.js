@@ -1,5 +1,4 @@
 import express from "express";
-import  from 'first'
 import { getProfile, updateProfile, updateProfileImage } from "../controllers/userController.js";
 import multer from "multer";
 import authMiddleware from "../middleware/authMiddleware.js";
