@@ -1,6 +1,7 @@
 // server.js
-import express from 'express'
 import dotenv from 'dotenv'
+dotenv.config();
+import express from 'express'
 import connectDB from './config/connectDB.js'
 import productRouter from './routes/productRoutes.js';
 import cartRouter from './routes/cartRoutes.js';
@@ -12,8 +13,6 @@ import orderRouter from './routes/orderRoutes.js';
 import userRouter from './routes/userRoutes.js';
 
 
-
-dotenv.config();
 const app = express();
 
 app.use(express.json({ limit: "10mb" }));

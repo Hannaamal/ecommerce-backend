@@ -1,5 +1,6 @@
 import User from "../model/user.js";
-import nodemailer from "nodemailer";
+import {  sendDeactivationEmail } from "../helpers/mailer.js";
+import emailTemplates from "../config/emailTemplates.js";
 
 
 // Get all users
@@ -46,36 +47,16 @@ export const toggleStatus = async (req, res) => {
     }
 
     // ✔ If user is deactivated → send email
-    if (status === "Inactive") {
-      await sendDeactivationEmail(user.email, user.name);
+     if (status === "Inactive") {
+      await sendDeactivationEmail(user.email, {
+        name: user.name,
+        created_time: new Date().toLocaleString(),
+      });
     }
+
 
     res.json({ message: "Status updated", user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
-const sendDeactivationEmail = async (email, name) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.SMTP_EMAIL,
-    to: email,
-    subject: "Your Account Has Been Deactivated",
-    html: `
-      <h2>Hello ${name},</h2>
-      <p>Your account has been <strong>deactivated</strong> by the admin.</p>
-      <p>If you think this is a mistake, please contact support.</p>
-      <br/>
-      <p>— Admin Team</p>
-    `,
-  };
-
-  await transporter.sendMail(mailOptions);
 };
