@@ -60,3 +60,21 @@ export const toggleStatus = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const getTotalUsers = async (req, res, next) => {
+  try {
+    const totalUsers = await User.countDocuments(); // count all users
+    res.status(200).json({
+      status: true,
+      message: "Total users fetched successfully",
+      totalUsers,
+    });
+  } catch (err) {
+    console.error("Error fetching total users:", err);
+    res.status(500).json({
+      status: false,
+      message: "Error fetching total users",
+      error: err.message,
+    });
+    next(err);
+  }
+};

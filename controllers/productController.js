@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { validationResult } from "express-validator";
 import HttpError from "../helpers/httpError.js";
 import Product from "../model/product.js";

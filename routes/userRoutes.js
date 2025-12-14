@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, updateUser } from "../controllers/userController.js";
+import { getAllUsers, getTotalUsers, updateUser } from "../controllers/userController.js";
 import { getProfile, updateProfile, updateProfileImage } from "../controllers/profileController.js";
 import { toggleStatus } from "../controllers/userController.js";
 import upload from "../middlewares/fileUpload.js";
@@ -18,5 +18,6 @@ userRouter.put("/:id", updateUser);
 
 // Toggle status
 userRouter.put("/:id/status", toggleStatus);
+userRouter.get("/total", getTotalUsers); // GET /api/users/total
 
 export default userRouter;
