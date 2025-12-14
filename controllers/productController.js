@@ -9,26 +9,17 @@ export const getProducts = async (req, res, next) => {
     const { limit = 50, skip = 0, category = "All", q = "" } = req.query;
     const limitNum = parseInt(limit);
     const skipNum = parseInt(skip);
+ const query = { is_deleted: false, stock: { $gt: 0 } };
 
-    
-     // ✅ STEP 1: base query
-    const query = {
-      is_deleted: false,
-      stock: { $gt: 0 },
-       ...(category !== "All" && { category }),
-    };
-
-    // ✅ STEP 2: apply search ONLY if q exists
-    if (q && q.trim() !== "") {
-      query.product_name = { $regex: q, $options: "i" };
-    }
-
-    // ✅ STEP 3: apply category ONLY if not "All"
+    // Apply category filter if provided
     if (category && category !== "All") {
-      query.category = category; // category ID
+      query.category = mongoose.Types.ObjectId(category);
     }
 
-    console.log(query, 'query')
+    // Apply search filter if provided
+    if (q && typeof q === "string" && q.trim().length > 0) {
+      query.product_name = { $regex: q.trim(), $options: "i" }; // case-insensitive
+    }
 
     const totalCount = await Product.countDocuments(query);
     const products = await Product.find(query)

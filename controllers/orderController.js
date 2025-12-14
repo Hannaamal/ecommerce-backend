@@ -30,18 +30,50 @@ export const createOrder = async (req, res) => {
   }
 };
 // Get My Orders
-export const getMyOrders = async (req, res, next) => {
+// export const getMyOrders = async (req, res, next) => {
+//   try {
+//     const orders = await Order.find({ user: req.userData.userId })
+//     console.log("ORDERS:", orders)
+//       .sort({ createdAt: -1 });
+
+//     res.json({ status: true, data: orders });
+
+//   } catch (err) {
+//      console.error(err)
+//     res.status(500).json({ status: false, message: "Failed to fetch orders", error: err.message });
+
+//     next(err);
+//   }
+// };
+export const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.userData.userId })
-    console.log("ORDERS:", orders)
-      .sort({ createdAt: -1 });
+    // use req.userData from your auth middleware
+    const userId = req.userData.userId;
 
-    res.json({ status: true, data: orders });
-    
-  } catch (err) {
-     console.error(err)
-    res.status(500).json({ status: false, message: "Failed to fetch orders", error: err.message });
+    if (!userId) {
+      return res.status(401).json({
+        status: false,
+        message: "Unauthorized: User not found",
+      });
+    }
 
-    next(err);
+    const orders = await Order.find({ userId }); // no sort
+
+    console.log("ORDERS:", orders);
+
+    return res.status(200).json({
+      status: true,
+      orders,
+    });
+  } catch (error) {
+    console.error("ERROR FETCHING ORDERS:", error);
+    if (!res.headersSent) {
+      return res.status(500).json({
+        status: false,
+        message: "Failed to fetch orders",
+        error: error.message,
+      });
+    }
   }
 };
+

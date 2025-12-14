@@ -11,6 +11,8 @@ import wishlistRouter from './routes/wishlistRoutes.js';
 import categoryRouter from './routes/categoryRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import adminreportRouter from './routes/adminreportRoutes.js';
+import MyorderRouter from './routes/myorderRoutes.js';
 
 
 const app = express();
@@ -37,6 +39,8 @@ app.use("/api/users", userRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/report',adminreportRouter)
+app.use('/api/myorder/',MyorderRouter)
 
 
 app.use((req, res, next) => {
