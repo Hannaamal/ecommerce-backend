@@ -12,7 +12,9 @@ import categoryRouter from './routes/categoryRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import adminreportRouter from './routes/adminreportRoutes.js';
-import MyorderRouter from './routes/myorderRoutes.js';
+import customerProductRoutes from "./routes/customerProductRoutes.js";
+
+
 
 
 const app = express();
@@ -32,6 +34,7 @@ app.use(cors({
 
 app.use('/uploads', express.static('uploads'));
 
+app.use("/api/customer", customerProductRoutes);
 app.use('/api/category',categoryRouter);
 app.use('/api/auth',authRouter)
 app.use('/api' ,productRouter);
@@ -40,7 +43,8 @@ app.use('/api/wishlist', wishlistRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/report',adminreportRouter)
-app.use('/api/myorder/',MyorderRouter)
+
+
 
 
 app.use((req, res, next) => {

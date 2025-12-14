@@ -5,4 +5,4 @@ const categorySchema = new mongoose.Schema({
   image: { type: String, required: true },
 });
 
-export default mongoose.model("category", categorySchema);
+export default mongoose.model("Category", categorySchema);
