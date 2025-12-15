@@ -13,6 +13,7 @@ import orderRouter from './routes/orderRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import adminreportRouter from './routes/adminreportRoutes.js';
 import customerProductRoutes from "./routes/customerProductRoutes.js";
+import adminorderRouter from "./routes/adminorderRoute.js"
 
 
 
@@ -42,6 +43,7 @@ app.use("/api/users", userRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/admin',adminorderRouter)
 app.use('/api/report',adminreportRouter)
 
 

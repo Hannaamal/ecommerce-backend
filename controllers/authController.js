@@ -113,6 +113,7 @@ export const login = async (req, res, next) => {
         secure: false, // true in production
         sameSite: "lax",
         path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // ✅ 7 DAYS
       });
 
       res.cookie("role", user.role, {
@@ -120,6 +121,7 @@ export const login = async (req, res, next) => {
         secure: false, // true in production
         sameSite: "lax",
         path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // ✅ 7 DAYS
       });
 
       return res.status(200).json({
@@ -133,5 +135,21 @@ export const login = async (req, res, next) => {
   } catch (err) {
     console.error(err);
     next(err);
+  }
+};
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.userData.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };

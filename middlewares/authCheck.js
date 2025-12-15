@@ -1,39 +1,43 @@
-import HttpError from "../helpers/httpError.js";
-import User from "../model/user.js";
 import jwt from "jsonwebtoken";
+import User from "../model/user.js";
+import HttpError from "../helpers/httpError.js";
 
 const userAuthCheck = async (req, res, next) => {
-  if (req.method === "OPTIONS") {
-    return next();
-  }
+  if (req.method === "OPTIONS") return next();
+
   try {
-  
-    const token = req.headers.authorization?.split(" ")[1];
-    if (! token) {
-      console.error(token);
-        return next(new HttpError("Authentication Failed", 403))
-    } else {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ _id: decodedToken.user_id })
-    
-        if (! user) {
-          return next(new HttpError("Invalid credentials", 400))
-        } else {
-          req.userData = { 
-            userId : decodedToken.user_id , 
-            userRole : decodedToken.user_role||decoded.role || user.role, 
-            userEmail : decodedToken.user_email || user.email
+    const authHeader = req.headers.authorization;
 
-        }; 
-        next();
+    // 1️⃣ Check header
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return next(new HttpError("Unauthorized", 401));
     }
-}
 
-} catch (err) {
-  
-  
-    return next(new HttpError("Authentication failed....", 403));
-    
+    // 2️⃣ Extract token
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return next(new HttpError("Unauthorized", 401));
+    }
+
+    // 3️⃣ Verify token
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 4️⃣ Find user
+    const user = await User.findById(decodedToken.user_id);
+    if (!user) {
+      return next(new HttpError("User not found", 401));
+    }
+
+    // 5️⃣ Attach user data
+    req.userData = {
+      userId: decodedToken.user_id,
+      userRole: decodedToken.user_role,
+      userEmail: decodedToken.user_email,
+    };
+
+    next();
+  } catch (err) {
+    return next(new HttpError("Authentication failed", 401));
   }
 };
 

@@ -1,6 +1,8 @@
 import express from "express";
-import { register, login } from "../controllers/authController.js";
+import { register, login,getMe} from "../controllers/authController.js";
 import { check } from "express-validator";
+import userAuthCheck from "../middlewares/authCheck.js";
+
 
 const authRouter = express.Router();
 
@@ -16,5 +18,6 @@ authRouter.post("/login",[
     check("password").notEmpty().withMessage("Password is required").isLength({ min: 5 }).withMessage("Password must be at least 5 characters"),
 ], login);
 
+authRouter.get("/me", userAuthCheck, getMe);
 
 export default authRouter;
