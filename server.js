@@ -29,7 +29,7 @@ connectDB()
 app.use(express.json());
 
 app.use(cors({
- origin: process.env.NEXT_PUBLIC_BACKEND_URL, // allow your frontend
+ origin: 'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app', // allow your frontend
   credentials: true,               // allow cookies/auth headers
 }));
 
