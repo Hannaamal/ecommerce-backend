@@ -28,10 +28,7 @@ connectDB()
 
 app.use(express.json());
 
-app.use(cors({
- origin: 'http://localhost:3000', // allow your frontend
-  credentials: true,               // allow cookies/auth headers
-}));
+app.use(cors());
 
 app.use('/uploads', express.static('uploads'));
 
