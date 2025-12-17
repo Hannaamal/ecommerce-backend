@@ -28,7 +28,10 @@ connectDB()
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+ origin: 'https://e-commerce-app-chi-neon.vercel.app/', // allow your frontend
+  credentials: true,               // allow cookies/auth headers
+}));
 
 app.use('/uploads', express.static('uploads'));
 
