@@ -29,7 +29,7 @@ connectDB()
 app.use(express.json());
 
 app.use(cors({
- origin: 'https://e-commerce-app-chi-neon.vercel.app/', // allow your frontend
+ origin: 'https://e-commerce-app-chi-neon.vercel.app', // allow your frontend
   credentials: true,               // allow cookies/auth headers
 }));
 
