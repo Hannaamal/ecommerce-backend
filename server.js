@@ -28,14 +28,26 @@ connectDB()
 
 app.use(express.json());
 
-app.use(cors({
-    origin: [
+const allowedOrigins = [
   'http://localhost:3000',
-  'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app'
-],
+  'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app',
+  'https://e-commerce-2tjd043yp-amalhannas-projects.vercel.app',
+];
 
-    credentials: true,               // allow cookies/auth headers
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
 
 app.use('/uploads', express.static('uploads'));
 
