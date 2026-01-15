@@ -29,8 +29,8 @@ connectDB()
 app.use(express.json());
 
 app.use(cors({
- origin: 'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app', 
-  credentials: true,               // allow cookies/auth headers
+    origin: ['localhost:3001', 'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app'], 
+    credentials: true,               // allow cookies/auth headers
 }));
 
 app.use('/uploads', express.static('uploads'));
