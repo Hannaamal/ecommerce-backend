@@ -29,7 +29,11 @@ connectDB()
 app.use(express.json());
 
 app.use(cors({
-    origin: ['localhost:3001', 'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app'], 
+    origin: [
+  'http://localhost:3000',
+  'https://e-commerce-f3yijf6j4-amalhannas-projects.vercel.app'
+],
+
     credentials: true,               // allow cookies/auth headers
 }));
 
